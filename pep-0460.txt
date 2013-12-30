@@ -1,0 +1,101 @@
+PEP: XXX
+Title: Executable Scripts on Windows
+Version: $Revision$
+Last-Modified: $Date$
+Author: Jason R. Coombs <jaraco@jaraco.com>
+Status: Active
+Type: Process
+Content-Type: text/x-rst
+Created: 30-Dec-2013
+Post-History: 30-Dec-2013
+
+
+Abstract
+========
+
+This PEP seeks to define a mechanism by which Python may be used for the
+purpose of scripts, commands, or applications in a cross-platform and
+transparent way.
+
+
+Rationale
+=========
+
+Following on the work of PEP 397 [1], in which a Python launcher was created
+and subsequently bundled with Python 3.3, this PEP seeks to leverage that
+launcher to provide a script launcher experience on Windows that is as
+similar as possible to that on Unix. (TODO: describe experience)
+
+In this PEP, the term "script" is used to describe a general concept covering
+a variety of subtly different use-cases:
+
+ - scripts: simple, isolated scripted routines,
+ - commands: programs typically executed on the command-line,
+ - applications: a console or GUI program typically run by a user, and
+ - entry points: a hook mechanism provided by a library for invoking certain
+   functionality.
+
+
+Goals
+=====
+
+Script should be executable without an extension.
+Script should be viewable and editable.
+Script should not be importable.
+Mechanism should support both GUI and console modes of execution.
+A single file should represent the script.
+
+
+Discussion
+==========
+
+There are two emergent techniques, each of which are suboptimal, but which can
+be improved.
+
+Executable Wrapper
+------------------
+
+Status Quo for setuptools, distlib. Disparate implementations. Fails
+editability and viewability. Sometimes also fails single-file.
+
+PATHEXT registered extension
+----------------------------
+
+No official endorsement of extension. Fails executability without extension in
+some environments (Cygwin, Popen).
+
+
+Proposal
+========
+
+1. Officially define two new extensions to represent Python executable scripts
+   on Windows: .pya, .pga. Register these extensions with the Python launcher
+   and as PATHEXT extensions.
+2. Extend Popen to honor PATHEXT.
+3. Provide routines in the PEP-397 launcher to readily create executables from
+   source scripts and extract scripts from such executables.
+4. Endorse one technique as preferred and provide a canonical way for an
+   environment to prefer the alternative.
+
+References
+==========
+
+.. [1] PEP 397, Python Launcher for Windows, Hammond, Löwis
+   (http://www.python.org/dev/peps/pep-0397)
+
+
+Copyright
+=========
+
+This document has been placed in the public domain.
+
+
+
+..
+   Local Variables:
+   mode: indented-text
+   indent-tabs-mode: nil
+   sentence-end-double-space: t
+   fill-column: 70
+   coding: utf-8
+   End:
