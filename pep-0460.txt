@@ -29,17 +29,56 @@ similar as possible to that on Unix. (TODO: describe experience)
 In this PEP, the term "script" is used to describe a general concept covering
 a variety of subtly different use-cases:
 
- - scripts: simple, isolated scripted routines,
+ - scripts: simple, isolated, scripted routines,
  - commands: programs typically executed on the command-line,
  - applications: a console or GUI program typically run by a user, and
  - entry points: a hook mechanism provided by a library for invoking certain
    functionality.
 
 
+Background
+==========
+
+TODO: Give history of using simple *.py.
+
+Executable Wrapper
+------------------
+
+Due to inherent limitations in Windows to
+handle files as executable functionality (*document these), the best
+recommendation from Microsoft (citation needed) is to simply use executable
+wrappers.
+
+Projects such as setuptools, distlib, and py2exe currently implement scripts
+in this way. For each script, a binary executable is generated, sometimes
+alongside a Python script or sometimes bundling it internally. This technique
+works rather well in all environments because it implements the most
+fundamental program interface.
+
+Limitations of the Executable Wrapper
+-------------------------------------
+
+The executable wrapper, however, fails in a number of scenarios which work
+naturally on Unix.
+
+TODO: make these easier to read and flesh out the ideas.
+
+Unable to launch them with pdb.
+Unable to launch them under a different Python executable or Python version.
+Unable to inspect them for which Python executable they use.
+Unable to inspect them for which library versions to which they correspond.
+Incongruent with launch mechanism on Unix
+Consume more space.
+Impossible to create with a text editor (requires tools to construct).
+UAT launching issues (requires manifest to prevent special treatment of "installer-like" exes).
+Difficult to distinguish gui from cmd executables.
+Unable to write file while in use (easy_install.exe can't replace easy_install.exe)
+
+
 Goals
 =====
 
-Script should be executable without an extension.
+Script should be executable without an extension in a shell.
 Script should be viewable and editable.
 Script should not be importable.
 Mechanism should support both GUI and console modes of execution.
@@ -74,8 +113,8 @@ Proposal
 2. Extend Popen to honor PATHEXT.
 3. Provide routines in the PEP-397 launcher to readily create executables from
    source scripts and extract scripts from such executables.
-4. Endorse one technique as preferred and provide a canonical way for an
-   environment to prefer the alternative.
+4. Endorse one technique as preferred and provide a canonical way for a
+   program in a given environment to prefer the alternative.
 
 References
 ==========
